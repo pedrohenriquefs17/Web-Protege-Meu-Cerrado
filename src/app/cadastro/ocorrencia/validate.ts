@@ -76,3 +76,25 @@ export const validateDateOfBirth = (date: string): boolean => {
   const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d$/; // Regex para formato de data DD/MM/YYYY
   return regex.test(date);
 };
+
+export const validateDataOcorrencia = (date: string): boolean => {
+  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d$/; // Regex para DD/MM/YYYY
+
+  if (!regex.test(date)) {
+    return false; // Retorna falso se o formato não for válido
+  }
+
+  // Converte a string da data para um objeto Date
+  const [dia, mes, ano] = date.split("/").map(Number);
+  const dataOcorrencia = new Date(ano, mes - 1, dia); // Mês começa em 0 no JavaScript
+
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0); // Zera as horas para comparar apenas datas
+
+  // Verifica o ano mínimo e se a data é futura
+  if (ano < 1914 || dataOcorrencia > hoje) {
+    return false;
+  }
+
+  return true; // Data válida
+};

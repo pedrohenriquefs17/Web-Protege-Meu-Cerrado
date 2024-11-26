@@ -57,22 +57,7 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                             value={ocorrencia.nome}
                             onChange={event => handleChange("nome", event.target.value)}
                             type="text"
-                            placeholder="Nome" />
-                        <span className="icon is-small is-left">
-                            <i className="fas fa-circle-user"></i>
-                        </span>
-                    </p>
-                </div>
-
-                <div className="field mb-5">
-                    <p className="control has-icons-left">
-                        <input id="inputSobrenome"
-                            className="input is-success is-medium"
-                            type="text"
-                            placeholder="Sobrenome"
-                            value={ocorrencia.sobrenome}
-                            onChange={event => handleChange("sobrenome", event.target.value)}
-                        />
+                            placeholder="Nome completo" />
                         <span className="icon is-small is-left">
                             <i className="fas fa-circle-user"></i>
                         </span>
