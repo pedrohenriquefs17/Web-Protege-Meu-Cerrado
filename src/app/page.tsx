@@ -1,18 +1,13 @@
-import Image from "next/image";
+import Link from "next/link";
 
 const Home = () => {
   return (
-    <main className="bg-[#127351] flex items-center justify-center h-screen">
-      <Image
-        // className="dark:invert"
-        src="/logo-protege-meu-cerrado.png"
-        alt="Protege Meu Cerrado logo"
-        width={400}
-        height={90}
-        priority
-      />
-    </main>
-  )
+    <>
+      <div>
+        <p className="subtitle">TO-DO - PÁGINA INICIAL</p>
+        <p className="subtitle">IN PROGRESS - PÁGINA DE CADASTRO DE OCORRÊNCIA</p>
+        <Link className="button" href="/cadastro/ocorrencia">Vá para a página de ocorrencia</Link>
+      </div>
+    </>
+  );
 }
-
-export default Home
