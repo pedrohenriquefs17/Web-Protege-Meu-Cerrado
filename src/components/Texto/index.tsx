@@ -5,10 +5,10 @@ interface ITexto {
 
 export const Texto = ({texto, titulo}: ITexto) => {
     return (
-        <article className="card is-shadowless">
-            <div className="card-content">
-                <h2 className="title">{titulo}</h2>
-                <p className="content">{texto}</p>
+        <article>
+            <div className="">
+                <h2 className="text-center text-2xl">{titulo}</h2>
+                <p className="text-justify text-lg">{texto}</p>
             </div>
         </article>
     )

@@ -31,15 +31,19 @@ const Carousel = ({ images }: ICarousel) => {
     };
 
     return (
-        <div className='h-96'>
+        <div className='h-full'>
             <figure className=''>
-                <Image
+                <img
+                    src={images[index]}
+                    className='h-full w-full'
+                />
+                {/* <Image
                     src={images[index]}
                     alt="Carrossel de imagens do cerrado."
-                    width={100}
+                    width={200}
                     height={96}
                     layout="intrinsic"
-                />
+                /> */}
             </figure>
         </div>
     )
