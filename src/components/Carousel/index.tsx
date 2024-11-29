@@ -1,7 +1,8 @@
 "use client"
 
-import Image from 'next/image';
-import React, { useState } from 'react';
+import Image from 'next/image'
+import React, { useEffect, useState } from 'react'
+import { Icon } from "@iconify/react"
 
 interface ICarousel {
     images: string[]
@@ -10,6 +11,14 @@ interface ICarousel {
 const Carousel = ({ images }: ICarousel) => {
     const [index, setIndex] = useState(0)
     const length = images.length
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setIndex((prevIndex) => (prevIndex + 1) % length); // Incrementa e reseta quando atinge o maxIndex
+        }, 3000) // 3segundos
+
+        return () => clearInterval(timer); // Limpa o timer quando o componente desmontar
+    });
 
     const handlePrevious = () => {
         const newIndex = index - 1
@@ -22,18 +31,16 @@ const Carousel = ({ images }: ICarousel) => {
     };
 
     return (
-        <div className="card is-shadowless">
-            <div className='card-image'>
-                <figure className='image'>
-                    <img
-                        src={images[index]}
-                        alt="Carrossel de imagens do cerrado."
-                        className='image is-128x128' />
-                </figure>
-            </div>
-            <button onClick={handlePrevious}>Previous</button>
-            <button onClick={handleNext}>Next</button>
-            {/* <p>{index}</p> */}
+        <div className='h-96'>
+            <figure className=''>
+                <Image
+                    src={images[index]}
+                    alt="Carrossel de imagens do cerrado."
+                    width={100}
+                    height={96}
+                    layout="intrinsic"
+                />
+            </figure>
         </div>
     )
 }
