@@ -4,9 +4,11 @@ export interface OcorrenciaInterface {
     dataNascimento: string;
     cpf: string;
     telefone: string;
+    anonimo: boolean;
     dataOcorrencia: string;
     categoria: string;
     descricao: string;
     arquivos: File[];
-    localizacao: string;
+    lat: string;
+    lng: string;
 }

@@ -7,7 +7,9 @@ import Etapa2 from "./etapa2";
 import Etapa3 from "./etapa3";
 
 export default function Ocorrencia() {
-    const [currentStep, setCurrentStep] = useState(2);
+    const [currentStep, setCurrentStep] = useState(0);
+
+    const [voltarAnonimo, setVoltarAnonimo] = useState(false);
 
     const [ocorrencia, setOcorrencia] = useState<OcorrenciaInterface>({
         nome: "",
@@ -15,18 +17,27 @@ export default function Ocorrencia() {
         cpf: "",
         telefone: "",
         dataNascimento: "",
+        anonimo: false,
         dataOcorrencia: "",
         categoria: "",
         descricao: "",
         arquivos: [] as File[],
-        localizacao: ""
+        lat: "",
+        lng: ""
     });
 
     const [validacoes, setValidacoes] = useState({
+        nomeValido: true,
         cpfValido: true,
         emailValido: true,
         telefoneValido: true,
-        dataNascimentoValido: true
+        dataNascimentoValido: true,
+        dataOcorrenciaValida: true,
+        descricaoValida: true,
+        cidadeValido: true,
+        bairroValido: true,
+        ruaValido: true,
+        numeroValido: true
     });
 
     const steps = 3;
@@ -40,12 +51,31 @@ export default function Ocorrencia() {
     // Usada para mostrar uma etapa (ela atualiza a etapa atual)
     const showStep = (index: number, tipo: string) => {
         if (tipo.includes('avancar')) {
-            if (!validacoes.cpfValido || !validacoes.dataNascimentoValido || !validacoes.emailValido || !validacoes.telefoneValido || !ocorrencia.nome) {
-                alert("Preencha os dados, por favor!");
-                return;
+            if (ocorrencia.anonimo == false) {
+                if (!validacoes.cpfValido || !ocorrencia.cpf || !validacoes.dataNascimentoValido || !ocorrencia.dataNascimento || !validacoes.emailValido || !ocorrencia.email || !validacoes.telefoneValido || !ocorrencia.telefone || !ocorrencia.nome) {
+                    alert("Preencha os dados, por favor!");
+                    return;
+                }
+            }
+
+            if (currentStep == 1) {
+                if (!validacoes.descricaoValida || !ocorrencia.descricao || !validacoes.dataOcorrenciaValida || !ocorrencia.dataOcorrencia) {
+                    alert("Preencha os campos, por favor!");
+                    return;
+                }
             }
         }
+
+        if (tipo.includes('voltar')) {
+            if (ocorrencia.anonimo === true) {
+                setVoltarAnonimo(true);
+            } else {
+                setVoltarAnonimo(false);
+            }
+        }
+
         setCurrentStep(index);
+
     }
 
     // Renderiza o conteúdo da etapa atual
@@ -53,7 +83,7 @@ export default function Ocorrencia() {
         switch (currentStep) {
             case 0:
                 return (
-                    <Etapa1 ocorrencia={ocorrencia} setOcorrencia={setOcorrencia} validacoes={validacoes} setValidacoes={setValidacoes} />
+                    <Etapa1 ocorrencia={ocorrencia} setOcorrencia={setOcorrencia} validacoes={validacoes} setValidacoes={setValidacoes} voltarAnonimo={voltarAnonimo} />
                 );
             case 1:
                 return (
@@ -64,7 +94,7 @@ export default function Ocorrencia() {
             case 2:
                 return (
                     <div>
-                        <Etapa3 ocorrencia={ocorrencia} setOcorrencia={setOcorrencia}></Etapa3>
+                        <Etapa3 ocorrencia={ocorrencia} setOcorrencia={setOcorrencia} validacoes={validacoes} setValidacoes={setValidacoes}></Etapa3>
                     </div>
                 );
             default:
@@ -72,9 +102,70 @@ export default function Ocorrencia() {
         }
     }
 
-    const submit = () => {
-        console.log(ocorrencia);
-    }
+    const enviarDadosParaBackend = async (dados: OcorrenciaInterface) => {
+        try {
+            const formData = new FormData();
+            formData.append("nome", dados.nome);
+            formData.append("email", dados.email);
+            formData.append("cpf", dados.cpf);
+            formData.append("telefone", dados.telefone);
+            formData.append("dataNascimento", dados.dataNascimento);
+            formData.append("anonimo", dados.anonimo.toString());
+            formData.append("dataOcorrencia", dados.dataOcorrencia);
+            formData.append("categoria", dados.categoria);
+            formData.append("descricao", dados.descricao);
+            formData.append("lat", dados.lat);
+            formData.append("lng", dados.lng);
+
+            // Adicionando arquivos
+            //dados.arquivos.forEach((arquivo, index) => {
+            //    formData.append(`arquivo${index}`, arquivo);
+            //});
+
+            const resposta = await fetch("http://seu-backend.com/api/endpoint", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao enviar dados para o backend");
+            }
+
+            const data = await resposta.json();
+            console.log("Resposta do servidor:", data);
+        } catch (erro) {
+            console.error("Erro no POST:", erro);
+            throw erro;
+        }
+    };
+
+    const submit = async () => {
+        try {
+
+            console.log(ocorrencia);
+
+            // await enviarDadosParaBackend(ocorrencia);
+            // alert("Dados enviados com sucesso!");
+
+            // setOcorrencia({
+            //     nome: "",
+            //     email: "",
+            //     cpf: "",
+            //     telefone: "",
+            //     dataNascimento: "",
+            //     anonimo: false,
+            //     dataOcorrencia: "",
+            //     categoria: "",
+            //     descricao: "",
+            //     arquivos: [] as File[],
+            //     lat: "",
+            //     lng: ""
+            // });
+        } catch (erro) {
+            alert("Erro ao enviar os dados. Tente novamente mais tarde.");
+            console.error(erro);
+        }
+    };
 
     return (
         <>
@@ -92,7 +183,7 @@ export default function Ocorrencia() {
                         <div className="mt-4 is-flex is-justify-content-space-between">
 
                             {currentStep > 0 ? (
-                                <button className="button is-success" onClick={() => showStep(currentStep - 1, "")}>
+                                <button className="button is-success" onClick={() => showStep(currentStep - 1, "voltar")}>
                                     Voltar
                                 </button>
                             ) : (
@@ -119,3 +210,4 @@ export default function Ocorrencia() {
         </>
     );
 }
+

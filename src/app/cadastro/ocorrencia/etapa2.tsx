@@ -1,6 +1,6 @@
 import { OcorrenciaInterface } from "./ocorrenciaInterface";
 import InputMask from 'react-input-mask';
-import { validateDataOcorrencia } from "./validate";
+import { validateDataOcorrencia, validateDescricao } from "./validate";
 
 export default function Etapa2({ ocorrencia, setOcorrencia, validacoes, setValidacoes }: any) {
 
@@ -12,6 +12,12 @@ export default function Etapa2({ ocorrencia, setOcorrencia, validacoes, setValid
     };
 
     const handleBlur = (campo: string) => {
+        if (campo == "descricao") {
+            setValidacoes({
+                ...validacoes,
+                descricaoValida: validateDescricao(ocorrencia.descricao),
+            });
+        }
         if (campo == "dataOcorrencia") {
             setValidacoes({
                 ...validacoes,
@@ -64,7 +70,8 @@ export default function Etapa2({ ocorrencia, setOcorrencia, validacoes, setValid
             </div>
             <label className="subtitle is-5">Descrição:</label>
             <div className="field mt-2 mb-5">
-                <textarea value={ocorrencia.descricao} onChange={event => handleChange("descricao", event.target.value)} className="textarea is-success is-medium"></textarea>
+                <textarea value={ocorrencia.descricao} onBlur={event => handleBlur("descricao")} onChange={event => handleChange("descricao", event.target.value)} className="textarea is-success is-medium"></textarea>
+                {!validacoes.descricaoValida && <p className="mt-2 subtitle is-5 has-text-danger">Campo obrigatório.</p>}
             </div>
             <label className="subtitle is-5">Arquivos:</label>
             <div className="field mt-2 mb-5">
@@ -77,9 +84,11 @@ export default function Etapa2({ ocorrencia, setOcorrencia, validacoes, setValid
                             </span>
                             <span className="file-label"> Escolha os arquivos </span>
                         </span>
-                        <span className="file-name"> {ocorrencia.arquivos.length > 0
-                            ? ocorrencia.arquivos.map((file: File) => file.name).join(", ")
-                            : "Nenhum arquivo selecionado"} </span>
+                        <span className="file-name"> {
+                            Array.isArray(ocorrencia.arquivos) && ocorrencia.arquivos.length > 0
+                                ? ocorrencia.arquivos.map((file: File) => file.name).join(", ")
+                                : "Nenhum arquivo selecionado"
+                        } </span>
                     </label>
                 </div >
             </div>

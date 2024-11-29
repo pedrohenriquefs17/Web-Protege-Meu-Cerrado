@@ -44,6 +44,14 @@ export const validatePhone = (phone: string): boolean => {
   return regex.test(phone);
 };
 
+export const validateNome = (nome: string): boolean => {
+  return nome.length>0;
+};
+
+export const validateDescricao = (descricao: string): boolean => {
+  return descricao.length>0 ? true : false;
+};
+
 // Função para verificar se é menor de idade
 const isMenorDezoito = (dataNasc: Date) => {
   const hoje = new Date();
@@ -78,11 +86,6 @@ export const validateDateOfBirth = (date: string): boolean => {
 };
 
 export const validateDataOcorrencia = (date: string): boolean => {
-  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d$/; // Regex para DD/MM/YYYY
-
-  if (!regex.test(date)) {
-    return false; // Retorna falso se o formato não for válido
-  }
 
   // Converte a string da data para um objeto Date
   const [dia, mes, ano] = date.split("/").map(Number);
@@ -96,5 +99,11 @@ export const validateDataOcorrencia = (date: string): boolean => {
     return false;
   }
 
-  return true; // Data válida
+  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d$/; // Regex para DD/MM/YYYY
+
+  return regex.test(date);
+};
+
+export const validateEndereco = (endereco: string): boolean => {
+  return endereco.length>0;
 };
