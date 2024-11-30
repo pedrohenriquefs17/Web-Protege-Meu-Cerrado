@@ -8,8 +8,8 @@ interface IVideoPlayer {
 export const VideoPlayer = ({ videoUrl }: IVideoPlayer) => {
     return (
         <ReactPlayer
-            width="500px"
-            height="400px"
+            // width="500px"
+            // height="400px"
             url={videoUrl}
             controls={true}
             // light is usefull incase of dark mode

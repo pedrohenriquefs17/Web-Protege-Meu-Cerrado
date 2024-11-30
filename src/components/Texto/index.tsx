@@ -8,7 +8,7 @@ export const Texto = ({texto, titulo}: ITexto) => {
         <article>
             <div className="">
                 <h2 className="text-center text-2xl">{titulo}</h2>
-                <p className="text-justify text-lg">{texto}</p>
+                <p className="text-justify text-lg mt-4">{texto}</p>
             </div>
         </article>
     )

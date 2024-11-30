@@ -6,13 +6,11 @@ interface IFuncionalidade {
 
 export const Funcionalidade = ({ image, texto, titulo }: IFuncionalidade) => {
     return (
-        <section className="message column" style={{height: "100%"}}>
-            <figure className="image container is-128x128">
-                <img src={image}></img>
-            </figure>
-            <div className="message-body">
-                <h4 className="subtitle is-size-4 has-text-centered">{titulo}</h4>
-                <p className="has-text-centered">{texto}</p>
+        <section className="w-64 px-2 bg-green-50 border border-black">
+            <img className="h-40 mx-auto" src={image}></img>
+            <div className="bg-green-200 w-full h-48 text-center text-black">
+                <h4 className="text-xl font-semibold py-2">{titulo}</h4>
+                <p className="">{texto}</p>
             </div>
         </section>
     )
