@@ -19,7 +19,7 @@ export default function Ocorrencia() {
         dataNascimento: "",
         anonimo: false,
         dataOcorrencia: "",
-        categoria: "",
+        categoriaId: -1,
         descricao: "",
         arquivos: [] as File[],
         lat: "",
@@ -102,65 +102,105 @@ export default function Ocorrencia() {
         }
     }
 
-    const enviarDadosParaBackend = async (dados: OcorrenciaInterface) => {
+    // const enviarDadosParaBackendCompleto = async (dados: OcorrenciaInterface) => {
+    //     try {
+    //         const formData = new FormData();
+
+    //         formData.append("nome", "dados.nome");
+    //         formData.append("email", "dados.email");
+    //         formData.append("cpf", dados.cpf);
+    //         formData.append("telefone", dados.telefone);
+    //         formData.append("dataNascimento", dados.dataNascimento);
+    //         formData.append("is_anon", dados.anonimo.toString());
+    //         formData.append("dataOcorrencia", dados.dataOcorrencia);
+    //         formData.append("categoria", dados.categoria);
+    //         formData.append("descricao", dados.descricao);
+    //         formData.append("lat", dados.lat);
+    //         formData.append("lng", dados.lng);
+
+        
+    //         dados.arquivos.forEach((arquivo, index) => {
+    //             formData.append(`arquivo${index}`, arquivo);
+    //         });
+
+    //         const resposta = await fetch("https://pmc.airsoftcontrol.com.br/ocorrencias/cadastro", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: formData
+    //         });
+
+    //         if (!resposta.ok) {
+    //             throw new Error("Erro ao enviar dados para o backend");
+    //         }
+
+    //         const data = await resposta.json();
+    //         console.log("Resposta do servidor:", data);
+    //     } catch (erro) {
+    //         console.error("Erro no POST:", erro);
+    //         throw erro;
+    //     }
+    // };
+
+    const enviarDadosParaBackend = async (dados: OcorrenciaInterface) =>{
         try {
-            const formData = new FormData();
-            formData.append("nome", dados.nome);
-            formData.append("email", dados.email);
-            formData.append("cpf", dados.cpf);
-            formData.append("telefone", dados.telefone);
-            formData.append("dataNascimento", dados.dataNascimento);
-            formData.append("anonimo", dados.anonimo.toString());
-            formData.append("dataOcorrencia", dados.dataOcorrencia);
-            formData.append("categoria", dados.categoria);
-            formData.append("descricao", dados.descricao);
-            formData.append("lat", dados.lat);
-            formData.append("lng", dados.lng);
-
-            // Adicionando arquivos
-            //dados.arquivos.forEach((arquivo, index) => {
-            //    formData.append(`arquivo${index}`, arquivo);
-            //});
-
-            const resposta = await fetch("http://seu-backend.com/api/endpoint", {
-                method: "POST",
-                body: formData,
+            
+            const body = JSON.stringify({
+                is_anon: dados.anonimo, 
+                descricao: dados.descricao.trim(),
+                // cpf: dados.cpf,
+                // telefone: dados.telefone,
+                // dataNascimento: dados.dataNascimento,
+                // dataOcorrencia: dados.dataOcorrencia,
+                id_categoria: dados.categoriaId,
+                // lat: dados.lat,
+                // lng: dados.lng
             });
-
+    
+            
+            const resposta = await fetch("https://pmc.airsoftcontrol.com.br/ocorrencias/cadastro", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: body,
+            });
+    
             if (!resposta.ok) {
-                throw new Error("Erro ao enviar dados para o backend");
+                throw new Error(`Erro ao enviar dados: ${resposta.status} ${resposta.statusText}`);
             }
-
+    
             const data = await resposta.json();
             console.log("Resposta do servidor:", data);
         } catch (erro) {
             console.error("Erro no POST:", erro);
             throw erro;
         }
-    };
+    }
 
     const submit = async () => {
         try {
 
             console.log(ocorrencia);
 
-            // await enviarDadosParaBackend(ocorrencia);
-            // alert("Dados enviados com sucesso!");
+            await enviarDadosParaBackend(ocorrencia);
+            alert("Dados enviados com sucesso!");
 
-            // setOcorrencia({
-            //     nome: "",
-            //     email: "",
-            //     cpf: "",
-            //     telefone: "",
-            //     dataNascimento: "",
-            //     anonimo: false,
-            //     dataOcorrencia: "",
-            //     categoria: "",
-            //     descricao: "",
-            //     arquivos: [] as File[],
-            //     lat: "",
-            //     lng: ""
-            // });
+            setOcorrencia({
+                nome: "",
+                email: "",
+                cpf: "",
+                telefone: "",
+                dataNascimento: "",
+                anonimo: false,
+                dataOcorrencia: "",
+                categoriaId: -1,
+                descricao: "",
+                arquivos: [] as File[],
+                lat: "",
+                lng: ""
+            });
         } catch (erro) {
             alert("Erro ao enviar os dados. Tente novamente mais tarde.");
             console.error(erro);
@@ -187,7 +227,7 @@ export default function Ocorrencia() {
                                     Voltar
                                 </button>
                             ) : (
-                                <span></span> /* Espaçador vazio para manter o alinhamento */
+                                <span></span> 
                             )}
 
                             {currentStep < (steps - 1) && (

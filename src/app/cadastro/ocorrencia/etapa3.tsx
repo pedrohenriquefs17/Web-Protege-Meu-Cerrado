@@ -43,10 +43,8 @@ export default function Etapa3({ ocorrencia, setOcorrencia, validacoes, setValid
                         lng: posicao.coords.longitude,
                     };
 
-                    // Atualiza a localização
                     setLocalizacao(novaLocalizacao);
 
-                    // Atualiza a ocorrência com a nova localização
                     setOcorrencia((prev: any) => ({
                         ...prev,
                         lat: novaLocalizacao.lat,
@@ -81,7 +79,7 @@ export default function Etapa3({ ocorrencia, setOcorrencia, validacoes, setValid
     const renderContent = () => {
         if (botaoSelecionado === 1) {
             return localizacao ? (
-                <Mapa localizacao={localizacao} setLocalizacao={setLocalizacao} endereco={endereco}/>
+                <Mapa localizacao={localizacao} setLocalizacao={setLocalizacao} endereco={endereco} funcao={1}/>
             ) : (
                 <p>Obtendo localização...</p>
             );
@@ -158,11 +156,10 @@ export default function Etapa3({ ocorrencia, setOcorrencia, validacoes, setValid
                                             onBlur={event => handleBlur("numero")} />
 
                                     </p>
-                                    {!validacoes.numeroValido && <p className="mt-2 subtitle is-5 has-text-danger">Campo obrigatório.</p>}
                                 </div>
                             </div>
                         </div>
-                    <Mapa localizacao={localizacao} setLocalizacao={setLocalizacao} endereco={endereco}></Mapa>
+                    <Mapa localizacao={localizacao} setLocalizacao={setLocalizacao} endereco={endereco} funcao={2}></Mapa>
                     </div>
 
                 </>

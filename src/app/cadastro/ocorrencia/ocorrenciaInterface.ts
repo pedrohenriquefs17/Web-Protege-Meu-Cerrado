@@ -6,7 +6,7 @@ export interface OcorrenciaInterface {
     telefone: string;
     anonimo: boolean;
     dataOcorrencia: string;
-    categoria: string;
+    categoriaId: number;
     descricao: string;
     arquivos: File[];
     lat: string;
