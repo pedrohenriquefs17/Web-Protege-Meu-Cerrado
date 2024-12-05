@@ -1,5 +1,4 @@
-import { FrontPage } from "components/FrontPage";
-import Link from "next/link";
+import FrontPage from "components/FrontPage"
 
 const Home = () => {
   return (

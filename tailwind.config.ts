@@ -11,7 +11,15 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primaryGreen: "#38B887",
+        secondaryGreen: "#127351",
+        primaryGray: "#5B7275",
+        secondaryGray: "#BCE4ED"
       },
+      fontFamily: {
+        primaryFont: "Maven Pro",
+        commercialFont: "Dancing Script"
+      }
     },
   },
   plugins: [],

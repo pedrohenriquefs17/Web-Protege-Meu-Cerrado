@@ -7,6 +7,7 @@ interface IBlog {
     texto: string
 }
 
+// TODO: ADICIONAR MAIS COISAS NO BLOG
 export const Blog = ({ texto, titulo }: IBlog) => {
     return (
         <article className="">
