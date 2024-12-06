@@ -6,7 +6,6 @@ import { Funcionalidade } from "components/Funcionalidade"
 import { Header } from "components/Header"
 import { Texto } from "components/Texto"
 import { VideoPlayer } from "components/VideoPlayer"
-import LinearWrapper from "components/LinearWrapper"
 
 const FrontPage = () => {
     return (
