@@ -11,6 +11,7 @@ const FrontPage = () => {
     return (
         <main className="px-20 bg-secondaryGray text-black">
             <Header />
+            <CarouselWrapper />
 
             <FlexWrapper>
                 <VideoPlayer videoUrl="https://www.youtube.com/watch?v=T92VCbyedMU " />
@@ -24,7 +25,6 @@ const FrontPage = () => {
                     <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={3} />
                     <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={4} />
                 </div>
-                <CarouselWrapper />
             </FlexWrapper>
 
             <FlexWrapper>
