@@ -1,7 +1,7 @@
 export interface OcorrenciaInterface {
     nome: string;
     email: string;
-    dataNascimento: string;
+    dataNascimento: string | null;
     cpf: string;
     telefone: string;
     anonimo: boolean;
@@ -11,4 +11,5 @@ export interface OcorrenciaInterface {
     arquivos: File[];
     lat: string;
     lng: string;
+    idUser: number | null;
 }

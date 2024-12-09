@@ -1,3 +1,5 @@
+import { parse, isValid } from "date-fns";
+
 // Função para validar CPF
 export const validateCPF = (cpf: string): boolean => {
   cpf = cpf.replace(/[^\d]+/g, '');
@@ -45,16 +47,34 @@ export const validatePhone = (phone: string): boolean => {
 };
 
 export const validateNome = (nome: string): boolean => {
-  return nome.length>0;
+  return nome.length > 0;
 };
 
 export const validateDescricao = (descricao: string): boolean => {
-  return descricao.length>0 ? true : false;
+  if (!descricao || typeof descricao !== 'string') {
+    return false;
+  }
+  return descricao.length > 0;
 };
 
-// Função para verificar se é menor de idade
-const isMenorDezoito = (dataNasc: Date) => {
+const parseDate = (date: string | null): Date => {
+
+  if (!date || typeof date !== 'string') {
+    console.log('A data fornecida não é válida.');
+    date = '01/18/2002';
+  }
+
+  const parsedDate = parse(date, "dd/MM/yyyy", new Date());
+
+  return parsedDate;
+
+};
+
+// Função para verificar se é menor de idade chamada pelo formulário
+export const isMenorDezoito = (date: string) => {
   const hoje = new Date();
+
+  const dataNasc = parseDate(date);
 
   const dezoitoAnosAtras = new Date(
     hoje.getFullYear() - 18,
@@ -69,16 +89,16 @@ const isMenorDezoito = (dataNasc: Date) => {
 // Função para validar Data de Nascimento (no formato DD/MM/YYYY)
 export const validateDateOfBirth = (date: string): boolean => {
 
-  const dataNasc = new Date(date);
+  if (date == null) {
+    return true;
+  }
+
+  const dataNasc = parseDate(date);
 
   const hoje = new Date();
 
-  if (dataNasc.getFullYear().valueOf() < 1914 || dataNasc.getFullYear() >= hoje.getFullYear()) {
+  if (dataNasc.getFullYear().valueOf() < 1914 || dataNasc.getFullYear() >= hoje.getFullYear() || !isValid(dataNasc)) {
     return false;
-  }
-
-  if (isMenorDezoito(dataNasc)) {
-    alert("Menor de dezoito.");
   }
 
   const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d\d$/; // Regex para formato de data DD/MM/YYYY
@@ -105,5 +125,5 @@ export const validateDataOcorrencia = (date: string): boolean => {
 };
 
 export const validateEndereco = (endereco: string): boolean => {
-  return endereco.length>0;
+  return endereco.length > 0;
 };
