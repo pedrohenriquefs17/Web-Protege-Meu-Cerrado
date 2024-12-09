@@ -146,20 +146,30 @@ export default function Ocorrencia() {
     const enviarDadosParaBackend = async (dados: OcorrenciaInterface) =>{
         try {
             
+            const converterData = (dataStr: any) => {
+                const [dia, mes, ano] = dataStr.split('/');
+                return `${ano}-${mes}-${dia}`;
+            };
+            
+            const dataNasc = new Date (converterData(dados.dataNascimento));
+            const dataOcorrencia = new Date (converterData(dados.dataOcorrencia));
+            
             const body = JSON.stringify({
                 is_anon: dados.anonimo, 
                 descricao: dados.descricao.trim(),
-                // cpf: dados.cpf,
-                // telefone: dados.telefone,
-                // dataNascimento: dados.dataNascimento,
-                // dataOcorrencia: dados.dataOcorrencia,
+                nome: dados.nome,
+                email: dados.email,
+                cpf: dados.cpf,
+                telefone: dados.telefone,
+                dt_nasc: dataNasc,
+                dt_ocorrencia: dataOcorrencia,
                 id_categoria: dados.categoriaId,
-                // lat: dados.lat,
-                // lng: dados.lng
+                lat: dados.lat,
+                lon: dados.lng
             });
     
             
-            const resposta = await fetch("https://pmc.airsoftcontrol.com.br/ocorrencias/cadastro", {
+            const resposta = await fetch("https://pmc.airsoftcontrol.com.br/ocorrencias", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
