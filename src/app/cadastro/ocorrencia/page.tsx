@@ -5,6 +5,7 @@ import Etapa1 from "./etapa1";
 import { OcorrenciaInterface } from "./ocorrenciaInterface";
 import Etapa2 from "./etapa2";
 import Etapa3 from "./etapa3";
+import Image from "next/image";
 
 export default function Ocorrencia() {
     const [currentStep, setCurrentStep] = useState(0);
@@ -16,14 +17,15 @@ export default function Ocorrencia() {
         email: "",
         cpf: "",
         telefone: "",
-        dataNascimento: "",
+        dataNascimento: null,
         anonimo: false,
         dataOcorrencia: "",
         categoriaId: -1,
         descricao: "",
         arquivos: [] as File[],
         lat: "",
-        lng: ""
+        lng: "",
+        idUser: 1
     });
 
     const [validacoes, setValidacoes] = useState({
@@ -34,10 +36,7 @@ export default function Ocorrencia() {
         dataNascimentoValido: true,
         dataOcorrenciaValida: true,
         descricaoValida: true,
-        cidadeValido: true,
-        bairroValido: true,
-        ruaValido: true,
-        numeroValido: true
+        cidadeValido: true
     });
 
     const steps = 3;
@@ -118,7 +117,7 @@ export default function Ocorrencia() {
     //         formData.append("lat", dados.lat);
     //         formData.append("lng", dados.lng);
 
-        
+
     //         dados.arquivos.forEach((arquivo, index) => {
     //             formData.append(`arquivo${index}`, arquivo);
     //         });
@@ -144,11 +143,15 @@ export default function Ocorrencia() {
     // };
 
     const enviarDadosParaBackend = async (dados: OcorrenciaInterface) =>{
+        console.log(dados)
         try {
             
-            const converterData = (dataStr: any) => {
-                const [dia, mes, ano] = dataStr.split('/');
-                return `${ano}-${mes}-${dia}`;
+            const converterData = (data: string | null): string => {
+                if (data && typeof data === 'string') {
+                    return data.split('-').join('/');
+                } else {
+                    return '';
+                }
             };
             
             const dataNasc = new Date (converterData(dados.dataNascimento));
@@ -165,7 +168,8 @@ export default function Ocorrencia() {
                 dt_ocorrencia: dataOcorrencia,
                 id_categoria: dados.categoriaId,
                 lat: dados.lat,
-                lon: dados.lng
+                lon: dados.lng,
+                id_user: dados.idUser
             });
     
             
@@ -209,7 +213,8 @@ export default function Ocorrencia() {
                 descricao: "",
                 arquivos: [] as File[],
                 lat: "",
-                lng: ""
+                lng: "",
+                idUser: ocorrencia.idUser
             });
         } catch (erro) {
             alert("Erro ao enviar os dados. Tente novamente mais tarde.");
@@ -220,9 +225,15 @@ export default function Ocorrencia() {
     return (
         <>
             <div className="custom-background section is-fullheight">
-                <div className="content has-text-centered">
-                    <p className="title has-text-white">Protege Meu Cerrado</p>
-                    <p className="subtitle has-text-white">Cadastre sua denúncia</p>
+                <div className="content is-flex is-justify-content-center is-align-items-center">
+                    <div className="has-text-centered">
+                        <Image
+                            src="/logo-protege-meu-cerrado.png"
+                            alt="Logo Protege Meu Cerrado"
+                            width={300}
+                            height={200}
+                        />
+                    </div>
                 </div>
                 <div>
                     <div className="column is-half is-offset-one-quarter">
@@ -237,7 +248,7 @@ export default function Ocorrencia() {
                                     Voltar
                                 </button>
                             ) : (
-                                <span></span> 
+                                <span></span>
                             )}
 
                             {currentStep < (steps - 1) && (

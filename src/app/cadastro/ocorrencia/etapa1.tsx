@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { validateCPF, validateEmail, validatePhone, validateDateOfBirth, validateNome } from "./validate";
+import { validateCPF, validateEmail, validatePhone, validateDateOfBirth, validateNome, isMenorDezoito } from "./validate";
 import InputMask from 'react-input-mask';
 
 interface DadosFormulario {
@@ -12,7 +12,7 @@ interface DadosFormulario {
     telefone: string;
 }
 
-export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValidacoes, voltarAnonimo}: any) {
+export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValidacoes, voltarAnonimo }: any) {
 
     const [botaoSelecionado, setBotaoSelecionado] = useState<number>(1);
 
@@ -32,22 +32,29 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
             : "button is-medium";
     }
 
+    const taCadastrado = () => {
+        if(ocorrencia.idUser === null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     useEffect(() => {
         if (voltarAnonimo) {
-           setBotaoSelecionado(2);
+            setBotaoSelecionado(2);
         }
     }, [voltarAnonimo]);
 
     useEffect(() => {
         if (botaoSelecionado === 2) {
-            // Backup dos dados antes de limpar
+    
             setDadosBackup(ocorrencia);
 
-            // Limpa os campos
             setDadosFormulario({
                 nome: '',
                 email: '',
-                dataNascimento: '',
+                dataNascimento: null,
                 cpf: '',
                 telefone: ''
             });
@@ -55,16 +62,15 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
             setOcorrencia({
                 nome: '',
                 email: '',
-                dataNascimento: '',
+                dataNascimento: null,
                 cpf: '',
                 telefone: '',
                 anonimo: true
             });
 
         } else if (botaoSelecionado === 1 && dadosBackup) {
-            // Restaura os dados do backup
             setDadosFormulario(dadosBackup);
-            setDadosBackup(null); // Limpa o backup para evitar reuso
+            setDadosBackup(null);
             setOcorrencia({ anonimo: false });
         }
     }, [botaoSelecionado]);
@@ -139,7 +145,7 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                     >
                         Denúncia normal
                     </button>
-                    <button className={getButtonClass(2)} onClick={() => setBotaoSelecionado(2)}>
+                    <button className={getButtonClass(2)} onClick={() => setBotaoSelecionado(2)} disabled={taCadastrado()}>
                         Denúncia anônima
                     </button>
                 </div>
@@ -152,12 +158,12 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                             type="text"
                             placeholder="Nome completo"
                             disabled={botaoSelecionado === 2}
-                            onBlur={ event => handleBlur("nome")}/>
+                            onBlur={event => handleBlur("nome")} />
                         <span className="icon is-small is-left">
                             <i className="fas fa-circle-user"></i>
                         </span>
                     </p>
-                    {botaoSelecionado==1 && !validacoes.nomeValido && <p className="mt-2 subtitle is-5 has-text-danger">Campo obrigatório.</p> }
+                    {botaoSelecionado == 1 && !validacoes.nomeValido && <p className="mt-2 subtitle is-5 has-text-danger">Campo obrigatório.</p>}
                 </div>
                 <div className="field mb-5">
                     <p className="control has-icons-left">
@@ -176,7 +182,7 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                     </p>
                 </div>
                 <div className="columns">
-                    <div className="field mb-5 column">
+                    <div className="field mb-2 column">
                         <p className="control has-icons-left">
                             <InputMask
                                 mask="999.999.999-99"
@@ -194,7 +200,7 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                             {botaoSelecionado == 1 && !validacoes.cpfValido && <p className="mt-2 subtitle is-5 has-text-danger">CPF inválido.</p>}
                         </p>
                     </div>
-                    <div className="field mb-5 column">
+                    <div className="field mb-2 column">
                         <p className="control">
                             <InputMask
                                 mask="99/99/9999"
@@ -209,7 +215,7 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                             {botaoSelecionado == 1 && !validacoes.dataNascimentoValido && <p className="mt-2 subtitle is-5 has-text-danger">Data de nascimento inválida.</p>}
                         </p>
                     </div>
-                    <div className="field mb-5 column">
+                    <div className="field mb-2 column">
                         <p className="control has-icons-left">
                             <InputMask
                                 mask="(99) 99999-9999"
@@ -228,6 +234,9 @@ export default function Etapa1({ ocorrencia, setOcorrencia, validacoes, setValid
                         </p>
                     </div>
                 </div>
+                {botaoSelecionado == 1 && validacoes.dataNascimentoValido && isMenorDezoito(dadosFormulario.dataNascimento) && <div className="notification is-warning is-light">
+                    A data de nascimento informada corresponde a um usuário menor de idade. Ao continuar utilizando esta plataforma, você declara que possui autorização de seus pais ou responsáveis legais para realizar os relatos.
+                </div>}
             </div>
         </>
     )
