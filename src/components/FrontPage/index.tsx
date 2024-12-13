@@ -1,3 +1,5 @@
+"use client"
+
 import ApiInfo from "components/ApiInfo"
 import { Blog } from "components/Blog"
 import CarouselWrapper from "components/Carousel/CarouselWraper"
@@ -6,10 +8,30 @@ import { Funcionalidade } from "components/Funcionalidade"
 import { Header } from "components/Header"
 import { Texto } from "components/Texto"
 import { VideoPlayer } from "components/VideoPlayer"
+import { useEffect, useState } from "react"
+import GET from "service/api/GET"
 
 const FrontPage = () => {
+    const [qtdUser, setQtdUser] = useState<number>(0)
+
+    useEffect(() => {
+        const fetchQtdUsuarios = async () => {
+            try {
+                const response = await GET({
+                    url: "https://pmc.airsoftcontrol.com.br/pmc/admin/quantidadeUsuarios"
+                })
+                setQtdUser(response)
+            } catch (error) {
+                // TODO: CRIAR UM TOAST DE ERROR
+                console.error(error)
+            }
+        }
+
+        fetchQtdUsuarios()
+    }, [])
+
     return (
-        <main className="px-20 bg-secondaryGray text-black">
+        <main className="px-20 bg-secondaryGray text-black primaryFont">
             <Header />
             <CarouselWrapper />
 
@@ -19,12 +41,10 @@ const FrontPage = () => {
             </FlexWrapper>
 
             <FlexWrapper>
-                <div className="grid grid-cols-2">
-                    <ApiInfo icon="mdi:user" title="Usuários cadastrados" text={1} />
-                    <ApiInfo icon="mdi:hourglass" title="Ocorrências em andamento" text={2} />
-                    <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={3} />
-                    <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={4} />
-                </div>
+                <ApiInfo icon="mdi:user" title="Usuários cadastrados" text={qtdUser} />
+                <ApiInfo icon="mdi:hourglass" title="Ocorrências em andamento" text={"?"} />
+                <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={"?"} />
+                <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={"?"} />
             </FlexWrapper>
 
             <FlexWrapper>
@@ -39,10 +59,6 @@ const FrontPage = () => {
                 {/* <CarouselWrapper /> */}
             </FlexWrapper>
 
-            <Blog titulo="Como a agricultura impacta no cerrado?" texto="
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Alias quis id optio tempora dolorem nihil nesciunt delectus rem quia! Possimus sunt ratione sint consequatur sapiente repellendus ex saepe, quaerat necessitatibus?
-            Corporis similique quasi iusto et, eligendi molestiae dicta reprehenderit eveniet, maiores ut hic, nihil quibusdam ex. Aperiam consequuntur dolorum, dignissimos quo totam reiciendis aliquid ipsam reprehenderit, mollitia accusamus, placeat eius.
-            Magnam doloribus, delectus doloremque unde id ipsam assumenda atque ab sapiente illo ipsa eius reiciendis quasi provident facilis animi ullam deleniti magni architecto dignissimos eligendi eos eum, pariatur fugiat! Aspernatur!"/>
         </main>
     )
 }

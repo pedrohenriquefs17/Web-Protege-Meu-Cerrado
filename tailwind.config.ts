@@ -17,7 +17,7 @@ const config: Config = {
         secondaryGray: "#BCE4ED"
       },
       fontFamily: {
-        primaryFont: "Maven Pro",
+        primaryFont: ["Maven Pro", "Arial"],
         commercialFont: "Dancing Script"
       }
     },
