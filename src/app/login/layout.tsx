@@ -27,7 +27,8 @@ const styles: { [key: string]: React.CSSProperties } = {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh"
+        minHeight: "100vh",
+        overflow: "hidden"
     },
     header: {
         backgroundColor: "#127351",
@@ -42,7 +43,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         height: "100vh",
         //backgroundImage: "url('https://boomi.b-cdn.net/wp-content/uploads/2023/09/Dia-Nacional-do-Cerrado-A-importancia-do-cerrado-brasileiro.png')",
         backgroundImage: "url('/lobo2.png')",
-        //backgroundImage: "url('/tucanoo.png')",
+        //backgroundImage: "url('/tucano.png')",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",

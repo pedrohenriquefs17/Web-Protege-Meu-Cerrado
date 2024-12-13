@@ -6,7 +6,7 @@ const Mapa: React.FC<any> = ({ localizacao, setLocalizacao, endereco, setEnderec
     const [error, setError] = useState<string | null>(null);
 
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCd177zMMVeuj0UIZWM7hHsoSZpaZ6Etzo",
+        googleMapsApiKey: "AIzaSyCd177zMMVeuj0UIZWM7hHsoSZpaZ6Etzo", //AIzaSyBmE-KqfQyyoo47gzs90EyhbpZniMqBC-w
         libraries: ["places"],
     });
 

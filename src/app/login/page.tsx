@@ -10,8 +10,6 @@ const LoginPage: React.FC = () => {
     const [error, setError] = useState("");
 
     const handleLogin = async (e: React.FormEvent) => {
-        const router = useRouter();
-
         e.preventDefault();
         try {
             const response = await fetch("https://pmc.airsoftcontrol.com.br/pmc/login", {
@@ -29,9 +27,9 @@ const LoginPage: React.FC = () => {
             }
 
             const data = await response.json();
-            router.push('/');
 
             console.log("Token: ", data);
+
         } catch (err) {
             setError("Erro ao conectar com o servidor.");
         }
