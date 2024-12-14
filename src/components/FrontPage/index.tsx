@@ -6,6 +6,8 @@ import CarouselWrapper from "components/Carousel/CarouselWraper"
 import FlexWrapper from "components/FlexWrapper"
 import { Funcionalidade } from "components/Funcionalidade"
 import { Header } from "components/Header"
+import LinearWrapper from "components/LinearWrapper"
+import MapaOcorrencia from "components/MapaOcorrencia"
 import { Texto } from "components/Texto"
 import { VideoPlayer } from "components/VideoPlayer"
 import { useEffect, useState } from "react"
@@ -41,10 +43,13 @@ const FrontPage = () => {
             </FlexWrapper>
 
             <FlexWrapper>
-                <ApiInfo icon="mdi:user" title="Usuários cadastrados" text={qtdUser} />
-                <ApiInfo icon="mdi:hourglass" title="Ocorrências em andamento" text={"?"} />
-                <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={"?"} />
-                <ApiInfo icon="ic:baseline-info" title="Ocorrências finalizadas" text={"?"} />
+                <LinearWrapper>
+                    <ApiInfo icon="mdi:user" title="Usuários cadastrados" text={qtdUser} />
+                    <ApiInfo icon="el:ok" title="Ocorrências finalizadas" text={"?"} />
+                    <ApiInfo icon="mdi:hourglass" title="Ocorrências em andamento" text={"?"} />
+                    <ApiInfo icon="mdi:hourglass" title="Ocorrências em andamento" text={"?"} />
+                </LinearWrapper>
+                <MapaOcorrencia />
             </FlexWrapper>
 
             <FlexWrapper>
@@ -56,7 +61,6 @@ const FrontPage = () => {
 
             <FlexWrapper>
                 <Texto titulo="Compromisso com a comunidade" texto="O Cerrado é o berço das águas do Brasil, essencial para o abastecimento de milhões de pessoas, a produção de alimentos e a biodiversidade. Sua preservação ajuda a combater as mudanças climáticas, protege comunidades tradicionais e garante o equilíbrio ambiental. Cuidar do Cerrado é cuidar da sociedade, da vida e do futuro do planeta. Juntos, podemos alinhar desenvolvimento sustentável e conservação, promovendo um mundo mais justo e equilibrado." />
-                {/* <CarouselWrapper /> */}
             </FlexWrapper>
 
         </main>
