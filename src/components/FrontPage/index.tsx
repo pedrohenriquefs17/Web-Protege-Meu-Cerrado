@@ -4,6 +4,7 @@ import ApiInfo from "components/ApiInfo"
 import { Blog } from "components/Blog"
 import CarouselWrapper from "components/Carousel/CarouselWraper"
 import FlexWrapper from "components/FlexWrapper"
+import Footer from "components/Footer"
 import { Funcionalidade } from "components/Funcionalidade"
 import { Header } from "components/Header"
 import LinearWrapper from "components/LinearWrapper"
@@ -62,7 +63,8 @@ const FrontPage = () => {
             <FlexWrapper>
                 <Texto titulo="Compromisso com a comunidade" texto="O Cerrado é o berço das águas do Brasil, essencial para o abastecimento de milhões de pessoas, a produção de alimentos e a biodiversidade. Sua preservação ajuda a combater as mudanças climáticas, protege comunidades tradicionais e garante o equilíbrio ambiental. Cuidar do Cerrado é cuidar da sociedade, da vida e do futuro do planeta. Juntos, podemos alinhar desenvolvimento sustentável e conservação, promovendo um mundo mais justo e equilibrado." />
             </FlexWrapper>
-
+            
+            <Footer />
         </main>
     )
 }

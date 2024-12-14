@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Protege Meu Cerrado",
-  description: "Projeto desenvolvido pelos alunos do IFTM",
+  description: "Projeto desenvolvido pelos alunos do IFTM - Campus Paracatu",
 };
 
 const RootLayout = ({children}: Readonly<{children: React.ReactNode}>) => {
