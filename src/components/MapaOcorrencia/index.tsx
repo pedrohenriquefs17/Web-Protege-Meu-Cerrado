@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api"
 import { useEffect, useState } from "react"
 import GET from "service/api/GET"
@@ -7,7 +10,7 @@ import IOcorrencia from "types/IOcorrencia"
 const MapaOcorrencia = () => {
     const [points, setPoins] = useState<IPonto[]>([])
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyBmE-KqfQyyoo47gzs90EyhbpZniMqBC-w"
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY!
     })
 
     const center = { // Belo Horizonte
