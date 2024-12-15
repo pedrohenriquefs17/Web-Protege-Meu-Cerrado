@@ -25,7 +25,7 @@ export default function Ocorrencia() {
         arquivos: [] as File[],
         lat: "",
         lng: "",
-        idUser: 1
+        idUser: 33
     });
 
     const [validacoes, setValidacoes] = useState({
@@ -142,37 +142,52 @@ export default function Ocorrencia() {
     //     }
     // };
 
-    const enviarDadosParaBackend = async (dados: OcorrenciaInterface) =>{
+    const enviarDadosParaBackend = async (dados: OcorrenciaInterface) => {
         console.log(dados)
         try {
-            
+
             const converterData = (data: string | null): string => {
                 if (data && typeof data === 'string') {
-                    return data.split('-').join('/');
-                } else {
-                    return '';
+                    const partes = data.split('/');
+                    if (partes.length === 3) {
+                        const [dia, mes, ano] = partes;
+                        return `${ano}-${mes}-${dia}`;
+                    }
                 }
+                return '';
             };
-            
-            const dataNasc = new Date (converterData(dados.dataNascimento));
-            const dataOcorrencia = new Date (converterData(dados.dataOcorrencia));
-            
+
+            const criarDataSomenteDia = (data: string): Date | null => {
+                if (data && /^\d{4}-\d{2}-\d{2}$/.test(data)) {
+                    const [ano, mes, dia] = data.split('-').map(Number);
+                    return new Date(Date.UTC(ano, mes - 1, dia));
+                }
+                return null;
+            };
+
+            const dataNasc = criarDataSomenteDia((converterData(dados.dataNascimento)));
+            const dataOcorrencia = criarDataSomenteDia((converterData(dados.dataOcorrencia)));
+
+            const dataNascISO = dataNasc ? dataNasc.toISOString().split('T')[0] : null;
+            const dataOcorrenciaISO = dataOcorrencia ? dataOcorrencia.toISOString().split('T')[0] : null;
+
             const body = JSON.stringify({
-                is_anon: dados.anonimo, 
-                descricao: dados.descricao.trim(),
-                nome: dados.nome,
-                email: dados.email,
-                cpf: dados.cpf,
-                telefone: dados.telefone,
-                dt_nasc: dataNasc,
-                dt_ocorrencia: dataOcorrencia,
-                id_categoria: dados.categoriaId,
-                lat: dados.lat,
-                lon: dados.lng,
-                id_user: dados.idUser
+                "is_anon": dados.anonimo, 
+                "descricao": dados.descricao.trim(),
+                "email": dados.email,
+                "cpf": dados.cpf,
+                "telefone": dados.telefone,
+                "dt_nasc": dataNascISO,
+                "dt_ocorrencia": dataOcorrenciaISO,
+                "id_categoria": dados.categoriaId,
+                "lat": dados.lat,
+                "lon": dados.lng,
+                "id_status": null,
+                "id_user": 33
             });
-    
-            
+
+            console.log("Corpo da requisição:", body);
+
             const resposta = await fetch("https://pmc.airsoftcontrol.com.br/ocorrencias", {
                 method: "POST",
                 headers: {
@@ -180,13 +195,10 @@ export default function Ocorrencia() {
                 },
                 body: body,
             });
-    
-            if (!resposta.ok) {
+
+            if (!(resposta.status === 201)) {
                 throw new Error(`Erro ao enviar dados: ${resposta.status} ${resposta.statusText}`);
             }
-    
-            const data = await resposta.json();
-            console.log("Resposta do servidor:", data);
         } catch (erro) {
             console.error("Erro no POST:", erro);
             throw erro;

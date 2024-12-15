@@ -8,7 +8,7 @@ const Mapa2: React.FC<any> = ({ localizacao, endereco, setEndereco }) => {
     const [localizacaoMapa2, setLocalizacaoMapa2] = useState<{ lat: number; lng: number }>(localizacao);
 
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyCd177zMMVeuj0UIZWM7hHsoSZpaZ6Etzo",
+        googleMapsApiKey: "AIzaSyCd177zMMVeuj0UIZWM7hHsoSZpaZ6Etzo", //AIzaSyBmE-KqfQyyoo47gzs90EyhbpZniMqBC-w
         libraries: ["places"],
     });
 
